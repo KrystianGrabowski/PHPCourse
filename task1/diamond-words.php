@@ -5,12 +5,8 @@
         while($wordRightPointer - $wordLeftPointer >= 1) {
             $numberOfLetters = $wordRightPointer - $wordLeftPointer;
             $str = $numberOfLetters . " ";
-            for($i = 0; $i < $wordLeftPointer; $i++) {
-                $str .= " ";
-            }
-            for($i = $wordLeftPointer; $i < $wordRightPointer; $i++) {
-                $str .= $characterArray[$i];
-            }
+            $str .= str_repeat(" ", $wordLeftPointer);
+            $str .= implode("",  array_slice($characterArray, $wordLeftPointer, $numberOfLetters));
             $diamondArray[] = $str;
             $wordLeftPointer++;
             $wordRightPointer--;
