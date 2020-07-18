@@ -81,6 +81,7 @@ class myFormatter implements MoneyFormatter {
         $this->fraction = intval(($money->getAmount() - $wholePart) * 100);
         $this->separator = $separator;
         $this->comma = $comma;
+        
     }
 
     function toString() {
@@ -93,7 +94,9 @@ class myFormatter implements MoneyFormatter {
             $str .= $wholeStr[0];
             array_shift($wholeStr);
         }
-        $str .= $this->separator;
+        if ($numOfIter != 0 && $reminder != 0) {
+            $str .= $this->separator;
+        }
         for ($i = 0; $i < $numOfIter; $i++) {
             for ($j = 0; $j < 3; $j++) {
                 $str .= $wholeStr[$i * 3 + $j];
