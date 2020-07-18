@@ -1,6 +1,6 @@
 <?php
 
-namespace products;
+namespace src;
 
 use Money\Money;
 
