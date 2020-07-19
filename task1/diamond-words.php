@@ -1,8 +1,10 @@
 <?php
-    function buildHalfDiamondArray($characterArray) {
+    function buildHalfDiamondArray($characterArray) 
+    {
         $wordRightPointer = count($characterArray);
         $wordLeftPointer = 0;
-        while($wordRightPointer - $wordLeftPointer >= 1) {
+        while($wordRightPointer - $wordLeftPointer >= 1) 
+        {
             $numberOfLetters = $wordRightPointer - $wordLeftPointer;
             $str = $numberOfLetters . " ";
             $str .= str_repeat(" ", $wordLeftPointer);
@@ -14,20 +16,22 @@
         return $diamondArray;
     }
 
-    function buildFullDiamondArray($diamondArray) {
+    function buildFullDiamondArray($diamondArray) 
+    {
         $shiftedArray = $diamondArray;
         array_shift($shiftedArray);
         return array_merge(array_reverse($shiftedArray), $diamondArray);
-
     }
 
-    function diamondWord($word) {
+    function diamondWord($word) 
+    {
         // (//u) split using UTF-8
         $characterArray = preg_split("//u", $word, -1, PREG_SPLIT_NO_EMPTY);
         return buildFullDiamondArray(buildHalfDiamondArray($characterArray));
     }
 
-    function diamondWords($words) {
+    function diamondWords($words) 
+    {
         $stringDiamonds = "";
         $numOfWords = count($words);
         foreach($words as $word) {

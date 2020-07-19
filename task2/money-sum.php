@@ -1,11 +1,14 @@
 <?php 
 
-class Money {
+class Money 
+{
     private $currency;
     private $amount;
 
-    function __construct($amount, $currency) {
-        if ($amount < 0) {
+    function __construct($amount, $currency)
+    {
+        if ($amount < 0) 
+        {
             return new Exception("Amount cannot be negative");
         }
         $this->amount = $amount;
@@ -13,60 +16,75 @@ class Money {
     }
 
     // Getters, setters
-    public function getCurrency() {
+    public function getCurrency()
+    {
         return $this->currency;
     }
 
-    public function setCurrency($newCurrency) {
+    public function setCurrency($newCurrency)
+    {
         $this->currency = $newCurrency;
     }
 
-    public function getAmount() {
+    public function getAmount()
+    {
         return $this->amount;
     }
 
-    public function setAmount($newAmount) {
+    public function setAmount($newAmount)
+    {
         $this->amount = $newAmount;
     }
 
     // Arithmetical operations
-    public function add(Money $money) {
-        if ($this->currency != $money->currency) {
+    public function add(Money $money)
+    {
+        if ($this->currency != $money->currency) 
+        {
             return new Exception("Different currency. Cannot perform operation!");
         }
         $this->setAmount($this->getAmount() + $money->getAmount());
     }
     
-    public function sub(Money $money) {
-        if ($this->currency != $money->currency) {
+    public function sub(Money $money)
+    {
+        if ($this->currency != $money->currency) 
+        {
             return new Exception("Different currency. Cannot perform operation!");
         }
-        if ($money->getAmount() > $this->getAmount()) {
+        if ($money->getAmount() > $this->getAmount()) 
+        {
             return new Exception("Amount cannot be negative");
         }
         $this->setAmount($this->getAmount() - $money->getAmount());
     }
 
-    public function mult(int $number) {
-        if ($number < 0) {
+    public function mult(int $number) 
+    {
+        if ($number < 0) 
+        {
             return new Exception("Amount cannot be multiplied by negative value!");
         }
         $this->setAmount($this->getAmount() * $number);
     }
 
-    public function div(int $number) {
-        if ($number <= 0) {
+    public function div(int $number) 
+    {
+        if ($number <= 0) 
+        {
             return new Exception("Amount cannot be divided by zero or negative value!");
         }
         $this->setAmount(round($this->getAmount() / $number, 2, PHP_ROUND_HALF_DOWN));
     }
 }
 
-interface MoneyFormatter {
+interface MoneyFormatter 
+{
     public function toString();
 }
 
-class myFormatter implements MoneyFormatter {
+class myFormatter implements MoneyFormatter 
+{
     private $comma;
     private $separator;
     private $whole;
@@ -74,7 +92,8 @@ class myFormatter implements MoneyFormatter {
     private $money;
     
 
-    function __construct(Money $money, $separator, $comma) {
+    function __construct(Money $money, $separator, $comma)
+    {
         $wholePart = floor($money->getAmount());
         $this->money = $money;
         $this->whole = $wholePart;
@@ -84,29 +103,36 @@ class myFormatter implements MoneyFormatter {
         
     }
 
-    function toString() {
+    function toString()
+    {
         $wholeStr = str_split($this->whole);
         $fractionStr = str_split($this->fraction);
         $reminder = count($wholeStr) % 3;
         $numOfIter = intval(count($wholeStr) / 3);
         $str = "";
-        for ($i = 0; $i < $reminder; $i++) {
+        for ($i = 0; $i < $reminder; $i++) 
+        {
             $str .= $wholeStr[0];
             array_shift($wholeStr);
         }
-        if ($numOfIter != 0 && $reminder != 0) {
+        if ($numOfIter != 0 && $reminder != 0) 
+        {
             $str .= $this->separator;
         }
-        for ($i = 0; $i < $numOfIter; $i++) {
-            for ($j = 0; $j < 3; $j++) {
+        for ($i = 0; $i < $numOfIter; $i++) 
+        {
+            for ($j = 0; $j < 3; $j++) 
+            {
                 $str .= $wholeStr[$i * 3 + $j];
             }
-            if ($i != $numOfIter - 1) {
+            if ($i != $numOfIter - 1) 
+            {
                 $str .= $this->separator;
             }
         }
         $str .= $this->comma;
-        foreach ($fractionStr as $digit) {
+        foreach ($fractionStr as $digit) 
+        {
             $str .= $digit;
         }
         $str .= " " . $this->money->getCurrency();
@@ -114,7 +140,8 @@ class myFormatter implements MoneyFormatter {
     }
 }
 
-if ($argc > 1) {
+if ($argc > 1) 
+{
 
     $currency = $argv[1];
     $money = new Money(0, $currency);
