@@ -17,4 +17,8 @@ $app['twig'] = $app->extend('twig', function ($twig, $app) {
     return $twig;
 });
 
+$app['storage'] = function() {
+    return new Storage('/home/krystian/Desktop/lampp/htdocs/phpcourse/task4/resources/');
+};
+
 return $app;

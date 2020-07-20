@@ -1,5 +1,7 @@
 <?php
 
+use Money\Currency;
+use Money\Money;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,10 +17,23 @@ $app->get('/', function () use ($app) {
 ;
 
 $app->get('/products', function () use ($app) {
-    return $app['twig']->render('index.html.twig', array());
-})
-->bind('homepage')
-;
+    $products = $app['storage']->fetchAll();
+    return json_encode($products);
+});
+
+$app->post('/products', function () use ($app) {
+    $input = file_get_contents("php://input");
+    $data = json_decode($input, true);
+
+    $id = $data['id'];
+    $name = $data['name'];
+    $amount = $data['amount'];
+    $currency = $data['currency'];
+
+    $newProduct = new Product($id, $name, new Money($amount, new Currency($currency)));
+    $app['storage']->insert($newProduct);
+    return new Response('Created', 201);
+});
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
     if ($app['debug']) {
