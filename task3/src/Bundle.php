@@ -16,14 +16,15 @@ class Bundle implements IProduct
     {
         $this->name = $name;
         $this->currency = $products[0]->getPrice()->getCurrency();
-        if (count($products) == 0) {
-            return new Exception("There must me at least one product in bundle");
+        if (count($products) == 0) 
+        {
+            throw new Exception("There must me at least one product in bundle");
         }
         foreach ($products as $product)
         {
             if ($this->currency != $product->getPrice()->getCurrency()) 
             {
-                return new Exception("All products must have the same currency");
+                throw new Exception("All products must have the same currency");
             }
             $this->products[] = $product;
         }

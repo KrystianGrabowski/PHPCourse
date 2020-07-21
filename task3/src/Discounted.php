@@ -14,7 +14,7 @@ class Discounted implements IProduct
     {
         if ($procent < 1 || $procent > 100) 
         {
-            return new Exception("Discount procent should be between 1 and 100");
+            throw new Exception("Discount procent should be between 1 and 100");
         }
         $this->procent = $procent;
         $this->product = $product;

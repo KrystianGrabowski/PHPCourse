@@ -26,7 +26,8 @@ class Storage implements IStorage
         {
             $fileContent = file_get_contents($this->path . $file);
             $product = unserialize($fileContent);
-            if ($product instanceof Product) {
+            if ($product instanceof Product)
+            {
                 $result[] = $product;
             }
         }
@@ -35,7 +36,8 @@ class Storage implements IStorage
 
     public function delete($id)
     {
-        if (!file_exists($this->path . $id)) {
+        if (!file_exists($this->path . $id))
+        {
             throw new Exception("File doesn't exist");
         }
         unlink($this->path . $id);
@@ -45,7 +47,8 @@ class Storage implements IStorage
     {
         $filePath = $this->path . $product->getId();
         $serializedFile = serialize($product);
-        if (file_exists($filePath)) {
+        if (file_exists($filePath))
+        {
             throw new Exception("File already exists");
         }
         file_put_contents($filePath, $serializedFile);
@@ -53,7 +56,8 @@ class Storage implements IStorage
 
     public function edit($id, $newValues)
     {
-        if (!file_exists($this->path . $id)) {
+        if (!file_exists($this->path . $id))
+        {
             throw new Exception("File doesn't exist");
         }
         $product = $this->fetch($id);

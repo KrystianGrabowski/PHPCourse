@@ -9,7 +9,7 @@ class Money
     {
         if ($amount < 0) 
         {
-            return new Exception("Amount cannot be negative");
+            throw new Exception("Amount cannot be negative");
         }
         $this->amount = $amount;
         $this->currency = $currency;
@@ -41,7 +41,7 @@ class Money
     {
         if ($this->currency != $money->currency) 
         {
-            return new Exception("Different currency. Cannot perform operation!");
+            throw new Exception("Different currency. Cannot perform operation!");
         }
         $this->setAmount($this->getAmount() + $money->getAmount());
     }
@@ -50,11 +50,11 @@ class Money
     {
         if ($this->currency != $money->currency) 
         {
-            return new Exception("Different currency. Cannot perform operation!");
+            throw new Exception("Different currency. Cannot perform operation!");
         }
         if ($money->getAmount() > $this->getAmount()) 
         {
-            return new Exception("Amount cannot be negative");
+            throw new Exception("Amount cannot be negative");
         }
         $this->setAmount($this->getAmount() - $money->getAmount());
     }
@@ -63,7 +63,7 @@ class Money
     {
         if ($number < 0) 
         {
-            return new Exception("Amount cannot be multiplied by negative value!");
+            throw new Exception("Amount cannot be multiplied by negative value!");
         }
         $this->setAmount($this->getAmount() * $number);
     }
@@ -72,7 +72,7 @@ class Money
     {
         if ($number <= 0) 
         {
-            return new Exception("Amount cannot be divided by zero or negative value!");
+            throw new Exception("Amount cannot be divided by zero or negative value!");
         }
         $this->setAmount(round($this->getAmount() / $number, 2, PHP_ROUND_HALF_DOWN));
     }
@@ -158,6 +158,17 @@ if ($argc > 1)
     $formatter = new myFormatter($money, " ", ",");
     echo $formatter->toString();
 }
+
+try
+{
+    $m = new Money(22, 'USD');
+    $m->div(0);
+}
+catch (Exception $e)
+{
+    echo $e->getMessage();
+}
+
 
 
 ?>
