@@ -12,44 +12,77 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 $app->get('/', function () use ($app) {
     return $app['twig']->render('index.html.twig', array());
-})
-->bind('homepage')
-;
+});
 
 $app->get('/products', function () use ($app) {
-    $products = $app['storage']->fetchAll();
+    try
+    {
+        $products = $app['storage']->fetchAll();
+    }
+    catch (Exception $e)
+    {
+        throw new Exception("Something went wrong! [GET /products]");
+    }
     return json_encode($products);
 });
 
 $app->post('/products', function () use ($app) {
-    $input = file_get_contents("php://input");
-    $data = json_decode($input, true);
-
-    $id = $data['id'];
-    $name = $data['name'];
-    $amount = $data['amount'];
-    $currency = $data['currency'];
-
-    $newProduct = new Product($id, $name, new Money($amount, new Currency($currency)));
-    $app['storage']->insert($newProduct);
+    try
+    {
+        $input = file_get_contents("php://input");
+        $data = json_decode($input, true);
+    
+        $id = $data['id'];
+        $name = $data['name'];
+        $amount = $data['amount'];
+        $currency = $data['currency'];
+    
+        $newProduct = new Product($id, $name, new Money($amount, new Currency($currency)));
+        $app['storage']->insert($newProduct);
+    }
+    catch (Exception $e)
+    {
+        return new Response("Something went wrong! [POST /products]", 400);
+    }
     return new Response('Created', 201);
 });
 
 $app->get('/products/{id}', function ($id) use ($app) {
-    $product = $app['storage']->fetch($id);
+    try
+    {
+        $product = $app['storage']->fetch($id);
+    }
+    catch (Exception $e)
+    {
+        return new Response("Something went wrong! [GET /products/{id}]", 400);
+    }
     return json_encode($product);
 });
 
 $app->put('/products/{id}', function ($id) use ($app) {
-    $input = file_get_contents("php://input");
-    $data = json_decode($input, true);
-
-    $app['storage']->edit($id, $data);
+    try
+    {
+        $input = file_get_contents("php://input");
+        $data = json_decode($input, true);
+    
+        $app['storage']->edit($id, $data);
+    }
+    catch (Exception $e)
+    {
+        return new Response("Something went wrong! [PUT /products/{id}]", 400);
+    }
     return new Response('Updated', 201);
 });
 
 $app->delete('/products/{id}', function ($id) use ($app) {
-    $app['storage']->delete($id);
+    try
+    {
+        $app['storage']->delete($id);
+    }
+    catch (Exception $e)
+    {
+        return new Response("Something went wrong! [DELETE /products/{id}]", 400);
+    }
     return new Response('Deleted', 201);
 });
 
