@@ -11,7 +11,12 @@ class Storage implements IStorage
 
     public function fetch($id)
     {
-        
+        if (file_exists($this->path . $id))
+        {
+            $fileContent = file_get_contents($this->path . $id);
+            $product = unserialize($fileContent);
+            return $product;
+        }
     }
 
     public function fetchAll()
@@ -20,9 +25,9 @@ class Storage implements IStorage
         foreach($files as $file)
         {
             $fileContent = file_get_contents($this->path . $file);
-            $obj = unserialize($fileContent);
-            if ($obj instanceof Product) {
-                $result[] = $obj;
+            $product = unserialize($fileContent);
+            if ($product instanceof Product) {
+                $result[] = $product;
             }
         }
         return $result;
@@ -30,7 +35,7 @@ class Storage implements IStorage
 
     public function delete($id)
     {
-        
+        unlink($this->path . $id);
     }
 
     public function insert(IProduct $product)
@@ -45,7 +50,10 @@ class Storage implements IStorage
 
     public function edit($id, $newValues)
     {
-        
+        $product = $this->fetch($id);
+        $product->update($newValues);
+        $this->delete($id);
+        $this->insert($product);
     }
 }
 

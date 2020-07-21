@@ -1,5 +1,6 @@
 <?php
 
+use Money\Currency;
 use Money\Money;
 
 class Product implements IProduct, JsonSerializable 
@@ -33,6 +34,15 @@ class Product implements IProduct, JsonSerializable
     public function jsonSerialize()
     {
         return get_object_vars($this);
+    }
+
+    public function update($values)
+    {
+        $amount = isset($values['amount']) ? $values['amount'] : $this->getPrice()->getAmount();
+        $currency = isset($values['currency']) ? $values['currency'] : $this->getPrice()->getCurrency();
+        
+        $this->name = isset($values['name']) ? $values['name'] : $this->getName();
+        $this->price = new Money($amount, new Currency($currency));
     }
     
 }

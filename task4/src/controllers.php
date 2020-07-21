@@ -35,6 +35,25 @@ $app->post('/products', function () use ($app) {
     return new Response('Created', 201);
 });
 
+$app->get('/products/{id}', function ($id) use ($app) {
+    $product = $app['storage']->fetch($id);
+    return json_encode($product);
+});
+
+$app->put('/products/{id}', function ($id) use ($app) {
+    $input = file_get_contents("php://input");
+    $data = json_decode($input, true);
+
+    $app['storage']->edit($id, $data);
+    return new Response('Updated', 201);
+});
+
+$app->delete('/products/{id}', function ($id) use ($app) {
+    $app['storage']->delete($id);
+    return new Response('Deleted', 201);
+});
+
+
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
     if ($app['debug']) {
         return;
