@@ -1,11 +1,12 @@
 <?php
 
-namespace src;
+namespace cart;
 
 use Countable;
 use Exception;
 use Money\Currency;
 use Money\Money;
+use product\IProduct;
 
 class Cart implements Countable
 {

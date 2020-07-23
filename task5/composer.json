@@ -4,7 +4,9 @@
     },
     "autoload": {
         "psr-4": {
-            "src\\": "src/"
+            "cart\\": "src/Cart",
+            "product\\": "src/Product",
+            "promotion\\": "src/Promotion"
         }
     }
 }

@@ -1,6 +1,8 @@
 <?php
 
-namespace src;
+namespace promotion;
+
+use cart\Cart;
 
 class PromotionMultiAnd implements IPromotion
 {
